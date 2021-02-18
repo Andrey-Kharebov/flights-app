@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { connect } from 'react-redux';
+import { setActiveSort } from '../../../redux/reducers/filter-reducer';
 import classes from './SortBlock.module.sass';
 
-function SortBlock() {
-  const [sortActive, setSortActive] = useState('priceUp');
+function SortBlock({ activeSort, setActiveSort }) {
 
   return (
     <div className={ classes.sortBlock }>
@@ -14,8 +15,8 @@ function SortBlock() {
               type='radio' 
               name='priceUp' 
               id='priceUp'
-              checked={ sortActive === 'priceUp' }
-              onChange={ () => { setSortActive('priceUp') } } 
+              checked={ activeSort === 'priceUp' }
+              onChange={ () => { setActiveSort('priceUp') } } 
             /> - по возрастанию цены
           </label>
         </li>
@@ -25,19 +26,19 @@ function SortBlock() {
               type='radio' 
               name='priceDown'
               id='priceDown'
-              checked={ sortActive === 'priceDown' }
-              onChange={ () => { setSortActive('priceDown') } }  
+              checked={ activeSort === 'priceDown' }
+              onChange={ () => { setActiveSort('priceDown') } }  
             /> - по убыванию цены
           </label>
           </li>
         <li>
-          <label htmlFor='roadTimeUp' >
+          <label htmlFor='durationUp' >
             <input 
               type='radio' 
-              name='roadTimeUp'
-              id='roadTimeUp'
-              checked={ sortActive === 'roadTimeUp' }
-              onChange={ () => { setSortActive('roadTimeUp') } }  
+              name='durationUp'
+              id='durationUp'
+              checked={ activeSort === 'durationUp' }
+              onChange={ () => { setActiveSort('durationUp') } }  
             /> - по времени в пути
           </label>
         </li>
@@ -46,4 +47,10 @@ function SortBlock() {
   )
 }
 
-export default SortBlock
+const mapStateToProps = (state) => {
+  return {
+    activeSort: state.filterReducer.activeSort
+  }
+}
+
+export default connect(mapStateToProps, { setActiveSort })(SortBlock);

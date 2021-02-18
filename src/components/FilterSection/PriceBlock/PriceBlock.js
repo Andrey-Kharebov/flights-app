@@ -1,7 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux';
+import { setMaxPrice, setMinPrice } from '../../../redux/reducers/filter-reducer';
 import classes from './PriceBlock.module.sass';
 
-function PriceBlock() {
+function PriceBlock({ minPrice, maxPrice, setMinPrice, setMaxPrice }) {
+  const minPriceHandler = (event) => {
+    setMinPrice(+event.target.value)
+  }
+
+  const maxPriceHandler = (event) => {
+    setMaxPrice(+event.target.value)
+  }
+
   return (
     <div className={ classes.priceBlock }>
       <span>Цена</span>
@@ -12,8 +22,8 @@ function PriceBlock() {
               type='number' 
               name='minPrice' 
               id='minPrice'
-              // checked={ sortActive === 'priceUp' }
-              // onChange={ () => { setSortActive('priceUp') } } 
+              value={ minPrice }
+              onChange={ (event) => { minPriceHandler(event) } } 
             />
           </label>
         </li>
@@ -23,8 +33,8 @@ function PriceBlock() {
               type='number' 
               name='maxPrice' 
               id='maxPrice'
-              // checked={ sortActive === 'priceUp' }
-              // onChange={ () => { setSortActive('priceUp') } } 
+              value={ maxPrice }
+              onChange={ (event) => { maxPriceHandler(event) } }  
             />
           </label>
         </li>
@@ -33,4 +43,11 @@ function PriceBlock() {
   )
 }
 
-export default PriceBlock
+const mapStateToProps = (state) => {
+  return {
+    minPrice: state.filterReducer.minPrice,
+    maxPrice: state.filterReducer.maxPrice
+  }
+}
+
+export default connect(mapStateToProps, { setMinPrice, setMaxPrice })(PriceBlock)
